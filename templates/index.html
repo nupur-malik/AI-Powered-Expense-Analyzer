@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanceFlow - Smart Banking Analytics</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i data-lucide="trending-up"></i>
+                    </div>
+                    <span class="logo-text">FinanceFlow</span>
+                </div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item active" data-page="gmail-extract">
+                    <i data-lucide="mail"></i>
+                    <span>Gmail Extract</span>
+                </li>
+                <li class="nav-item" data-page="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </li>
+                <li class="nav-item" data-page="transactions">
+                    <i data-lucide="receipt"></i>
+                    <span>Transactions</span>
+                </li>
+                <li class="nav-item" data-page="insights">
+                    <i data-lucide="brain"></i>
+                    <span>AI Insights</span>
+                </li>
+                <li class="nav-item" data-page="analytics">
+                    <i data-lucide="bar-chart-3"></i>
+                    <span>Analytics</span>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <h1 class="page-title">Gmail Extract</h1>
+                </div>
+                <div class="header-right">
+                    <div class="user-profile">
+                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face" alt="Profile">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Gmail Extract Page (Primary Feature) -->
+            <section class="page active" id="gmail-extract">
+                <div class="gmail-extract-container">
+                    <!-- Hero Section -->
+                    <div class="hero-section">
+                        <div class="hero-content">
+                            <div class="hero-icon">
+                                <i data-lucide="mail"></i>
+                            </div>
+                            <h1>Extract Bank Statements from Gmail</h1>
+                            <p>Automatically extract and analyze your SBI bank statements directly from your Gmail inbox</p>
+                        </div>
+                    </div>
+
+                    <!-- Progress Card (Hidden by default) -->
+                    <div class="progress-card" id="progressCard" style="display: none;">
+                        <div class="progress-header">
+                            <h3>Processing Your Request</h3>
+                            <div class="progress-status" id="progressStatus">Starting...</div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progressBar">
+                                <div class="progress-fill" id="progressFill"></div>
+                                <div class="progress-text" id="progressText">0%</div>
+                            </div>
+                        </div>
+                        <div class="progress-steps">
+                            <div class="step" id="step1">
+                                <div class="step-icon"><i data-lucide="wifi"></i></div>
+                                <span>Connecting to Gmail</span>
+                            </div>
+                            <div class="step" id="step2">
+                                <div class="step-icon"><i data-lucide="search"></i></div>
+                                <span>Searching Emails</span>
+                            </div>
+                            <div class="step" id="step3">
+                                <div class="step-icon"><i data-lucide="download"></i></div>
+                                <span>Extracting PDFs</span>
+                            </div>
+                            <div class="step" id="step4">
+                                <div class="step-icon"><i data-lucide="file-text"></i></div>
+                                <span>Processing Data</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gmail Form -->
+                    <div class="gmail-form-card" id="gmailFormCard">
+                        <div class="form-header">
+                            <h2>Enter Your Gmail Details</h2>
+                            <p>We'll securely connect to your Gmail to extract bank statements</p>
+                        </div>
+
+                        <form class="gmail-form" id="gmailForm">
+                            <div class="form-group">
+                                <label for="gmailEmail">Gmail Address</label>
+                                <div class="input-wrapper">
+                                    <i data-lucide="mail"></i>
+                                    <input type="email" id="gmailEmail" placeholder="your.email@gmail.com" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gmailPassword">App Password</label>
+                                <div class="input-wrapper">
+                                    <i data-lucide="key"></i>
+                                    <input type="password" id="gmailPassword" placeholder="16-character app password" required>
+                                </div>
+                                <div class="help-text">
+                                    <i data-lucide="info"></i>
+                                    <span>Need help? <a href="#" onclick="showAppPasswordHelp()">How to create an App Password</a></span>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="fromDate">From Date</label>
+                                    <div class="input-wrapper">
+                                        <i data-lucide="calendar"></i>
+                                        <input type="date" id="fromDate" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="toDate">To Date</label>
+                                    <div class="input-wrapper">
+                                        <i data-lucide="calendar"></i>
+                                        <input type="date" id="toDate" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="pdfPassword">PDF Password</label>
+                                <div class="input-wrapper">
+                                    <i data-lucide="shield"></i>
+                                    <input type="password" id="pdfPassword" placeholder="Last 5 digits + DOB (e.g., 67890150390)" required>
+                                </div>
+                                <div class="help-text">
+                                    <i data-lucide="info"></i>
+                                    <span>Format: Last 5 digits of mobile + DDMMYY</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-primary btn-large" id="extractBtn">
+                                <i data-lucide="download"></i>
+                                <span>Extract Bank Statements</span>
+                            </button>
+                        </form>
+
+                        <!-- Alternative Upload -->
+                        <div class="alternative-section">
+                            <div class="divider">
+                                <span>Or</span>
+                            </div>
+                            <div class="upload-option" onclick="openUploadModal()">
+                                <i data-lucide="upload"></i>
+                                <span>Upload PDF Files Manually</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Results Section (Hidden by default) -->
+                    <div class="results-section" id="resultsSection" style="display: none;">
+                        <div class="results-header">
+                            <h2>Extraction Complete!</h2>
+                            <p>Your bank statements have been processed successfully</p>
+                        </div>
+                        <div class="results-actions">
+                            <button class="btn-primary" onclick="viewDashboard()">
+                                <i data-lucide="bar-chart-3"></i>
+                                View Dashboard
+                            </button>
+                            <button class="btn-secondary" onclick="viewTransactions()">
+                                <i data-lucide="list"></i>
+                                View Transactions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard Page -->
+            <section class="page" id="dashboard">
+                <div class="dashboard-grid">
+                    <!-- Quick Stats Cards -->
+                    <div class="stats-row">
+                        <div class="stat-card income">
+                            <div class="stat-icon">
+                                <i data-lucide="trending-up"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Total Income</h3>
+                                <p class="stat-value">₹0</p>
+                                <span class="stat-change positive">+2.5%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card expenses">
+                            <div class="stat-icon">
+                                <i data-lucide="trending-down"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Total Expenses</h3>
+                                <p class="stat-value">₹0</p>
+                                <span class="stat-change negative">-1.2%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card balance">
+                            <div class="stat-icon">
+                                <i data-lucide="wallet"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Net Balance</h3>
+                                <p class="stat-value">₹0</p>
+                                <span class="stat-change positive">+5.8%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card transactions">
+                            <div class="stat-icon">
+                                <i data-lucide="activity"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Transactions</h3>
+                                <p class="stat-value">0</p>
+                                <span class="stat-change positive">+12</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="charts-section">
+                        <div class="chart-container large">
+                            <div class="chart-header">
+                                <h3>Spending Trends</h3>
+                            </div>
+                            <canvas id="spendingChart"></canvas>
+                        </div>
+                        
+                        <div class="chart-container">
+                            <div class="chart-header">
+                                <h3>Category Breakdown</h3>
+                            </div>
+                            <canvas id="categoryChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recent Transactions -->
+                    <div class="recent-transactions">
+                        <div class="section-header">
+                            <h3>Recent Transactions</h3>
+                        </div>
+                        <div class="transaction-list" id="recentTransactions">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Transactions Page -->
+            <section class="page" id="transactions">
+                <div class="transactions-container">
+                    <div class="transactions-header">
+                        <h2>All Transactions</h2>
+                        <div class="filter-controls">
+                            <select class="category-filter">
+                                <option value="">All Categories</option>
+                                <option value="Food & Dining">Food & Dining</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Utilities">Utilities</option>
+                            </select>
+                            <input type="date" class="date-filter" id="fromDateFilter">
+                            <input type="date" class="date-filter" id="toDateFilter">
+                            <button class="btn-primary">Apply Filters</button>
+                        </div>
+                    </div>
+                    <div class="transactions-table">
+                        <table id="transactionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="transactionsBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Insights Page -->
+            <section class="page" id="insights">
+                <div class="insights-container">
+                    <div class="insights-header">
+                        <h2>AI-Powered Financial Insights</h2>
+                        <div class="ai-avatar">
+                            <i data-lucide="brain"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="insights-grid">
+                        <div class="insight-card spending-pattern">
+                            <div class="insight-icon">
+                                <i data-lucide="pie-chart"></i>
+                            </div>
+                            <h3>Spending Pattern Analysis</h3>
+                            <p id="spendingInsight">Analyzing your spending patterns...</p>
+                            <div class="insight-action">
+                                <button class="btn-secondary">View Details</button>
+                            </div>
+                        </div>
+                        
+                        <div class="insight-card budget-recommendation">
+                            <div class="insight-icon">
+                                <i data-lucide="target"></i>
+                            </div>
+                            <h3>Budget Recommendations</h3>
+                            <p id="budgetInsight">Generating personalized budget suggestions...</p>
+                            <div class="insight-action">
+                                <button class="btn-secondary">Set Budget</button>
+                            </div>
+                        </div>
+                        
+                        <div class="insight-card savings-opportunity">
+                            <div class="insight-icon">
+                                <i data-lucide="piggy-bank"></i>
+                            </div>
+                            <h3>Savings Opportunities</h3>
+                            <p id="savingsInsight">Identifying potential savings areas...</p>
+                            <div class="insight-action">
+                                <button class="btn-secondary">Learn More</button>
+                            </div>
+                        </div>
+                        
+                        <div class="insight-card financial-health">
+                            <div class="insight-icon">
+                                <i data-lucide="heart"></i>
+                            </div>
+                            <h3>Financial Health Score</h3>
+                            <div class="health-score">
+                                <div class="score-circle">
+                                    <div class="score-fill"></div>
+                                    <span class="score-text">--</span>
+                                </div>
+                            </div>
+                            <p id="healthInsight">Calculating your financial health...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Page -->
+            <section class="page" id="analytics">
+                <div class="analytics-container">
+                    <h2>Advanced Analytics</h2>
+                    <div class="analytics-grid">
+                        <div class="chart-container">
+                            <h3>Monthly Comparison</h3>
+                            <canvas id="monthlyChart"></canvas>
+                        </div>
+                        <div class="chart-container">
+                            <h3>Transaction Volume</h3>
+                            <canvas id="volumeChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- App Password Help Modal -->
+        <div class="modal" id="helpModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>How to Create Gmail App Password</h3>
+                    <button class="close-btn" onclick="closeHelpModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="help-steps">
+                        <div class="help-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Enable 2-Factor Authentication</h4>
+                                <p>Go to your Google Account settings and enable 2FA if not already enabled</p>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Generate App Password</h4>
+                                <p>Go to Security → App passwords → Select "Mail" → Generate</p>
+                            </div>
+                        </div>
+                        <div class="help-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Copy the Password</h4>
+                                <p>Copy the 16-character password and use it in the form above</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Modal -->
+        <div class="modal" id="uploadModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Upload PDF Files</h3>
+                    <button class="close-btn" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="upload-area" id="uploadArea">
+                        <i data-lucide="upload-cloud"></i>
+                        <h4>Drag & drop your PDF files here</h4>
+                        <p>or click to browse</p>
+                        <input type="file" id="fileInput" multiple accept=".pdf" hidden>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
